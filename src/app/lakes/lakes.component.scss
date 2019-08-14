@@ -1,0 +1,30 @@
+h3 {
+  text-align: center;
+}
+
+.container {
+  width: 370px;
+  margin: 20px;
+  padding: 10px;
+  border-radius: 20px;
+  background-image: url("https://media.istockphoto.com/vectors/rippled-water-surface-seamless-repeating-pattern-texture-vector-id965489042?k=6&m=965489042&s=612x612&w=0&h=v88p4U9Ani3D9TPBBtmj-XYY9WE8JG1lGqX_I-niU5A=");
+  background-repeat: repeat;
+
+  .tuna,
+  .salmon {
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    background-size: 100%;
+    margin: 6px;
+    cursor: pointer;
+  }
+
+  .salmon {
+    background-image: url("https://image.flaticon.com/icons/svg/1198/1198641.svg");
+  }
+
+  .tuna {
+    background-image: url("https://image.flaticon.com/icons/svg/394/394730.svg");
+  }
+}

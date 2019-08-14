@@ -1,0 +1,4 @@
+<div class="container" id="{{lake.type}}" *ngFor="let lake of lakes" (click)="onCatchFish($event)">
+    <div *ngFor="let salmon of lake.salmonArray" class="salmon"></div>
+    <div *ngFor="let tuna of lake.tunaArray" class="tuna"></div>
+</div>
