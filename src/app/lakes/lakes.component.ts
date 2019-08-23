@@ -1,17 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../api.service';
+import { ApiService } from '../services/api.service';
 import { ILakeModel } from '../models/lake.interface';
+import { SocketIoService } from '../services/socket-io.service';
+import { ILakeViewModel } from '../models/lake.view-model';
 
 @Component({
   selector: 'app-lakes',
   templateUrl: './lakes.component.html',
-  styleUrls: ['./lakes.component.scss']
+  styleUrls: ['./lakes.component.scss'],
+  providers: [SocketIoService]
 })
 export class LakesComponent implements OnInit {
 
   public lakes = new Array<ILakeModel>();
+  private fishType: ILakeViewModel;
 
-  constructor(private apiService: ApiService) { }
+
+  constructor(private apiService: ApiService, private socketService: SocketIoService) {
+    socketService.socketDataSource.subscribe(data => {
+      console.log(data);
+      this.removeFish(data)
+    })
+  }
 
   ngOnInit() {
     this.getLakes();
@@ -43,14 +53,21 @@ export class LakesComponent implements OnInit {
     }
   }
 
-  public onCatchFish(e): void {
+  public onCatchFish(e: any): void {
     if (e.target.className !== 'tuna' && e.target.className !== 'salmon') {
-      return
+      return;
     } else {
       let currentLake: string = e.target.parentElement.id;
-      let fishType = e.target.className;
-      this.apiService.updateLake(currentLake, { fishType }).subscribe();
+      this.fishType = { fishType: e.target.className };
+      this.apiService.updateLake(currentLake, this.fishType).subscribe();
     }
   };
+
+  public removeFish(socketData: any) {
+    const index = this.lakes.findIndex(item => item.name === socketData.res.name)
+    let nameOfLakeArray = socketData.fishType + 'Array';
+    this.lakes[index][this.lakes[index].type] -= 1;
+    this.lakes[index][nameOfLakeArray].splice(0, 1);
+  }
 
 }
